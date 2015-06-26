@@ -75,6 +75,9 @@ public class Recorder {
         recordingThread.start();
     }
     
+    /**
+     * Stop recording 
+     */
     public static void stopRecording(){
         record = false;
     }
