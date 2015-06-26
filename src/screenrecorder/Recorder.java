@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.MediaLocator;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -113,5 +115,23 @@ public class Recorder {
             tmp.deleteOnExit();
         }
         return retVal;
+    }
+    
+    /**
+     * Take a screenshot
+     * 
+     * @param filePath the file path to save the screenshot
+     */
+    public static void takeScreenshot(String filePath){
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                Robot robot = new Robot();
+                BufferedImage img = robot.createScreenCapture(new Rectangle(WIDTH, HEIGHT));
+                ImageIO.write(img, "png", new File(filePath));
+            } catch(AWTException | IOException | InterruptedException e){
+                Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }).start();
     }
 }

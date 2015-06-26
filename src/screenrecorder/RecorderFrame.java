@@ -87,6 +87,7 @@ public class RecorderFrame extends javax.swing.JFrame {
         outLabel = new javax.swing.JLabel();
         changeOutputButton = new javax.swing.JButton();
         onCompleteCheck = new javax.swing.JCheckBox();
+        screenButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -209,6 +210,15 @@ public class RecorderFrame extends javax.swing.JFrame {
             }
         });
 
+        screenButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/rsz_1rsz_1rsz_camera-icon.png"))); // NOI18N
+        screenButton.setToolTipText("Take a screenshot");
+        screenButton.setFocusable(false);
+        screenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                screenButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -216,21 +226,24 @@ public class RecorderFrame extends javax.swing.JFrame {
             .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(recButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(screenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(outLabel))
-                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fileField)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(onCompleteCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                        .addGap(0, 26, Short.MAX_VALUE)
+                        .addComponent(onCompleteCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(changeOutputButton)))
+                        .addComponent(changeOutputButton))
+                    .addComponent(fileField))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -247,7 +260,8 @@ public class RecorderFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(stopButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(recButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(recButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(screenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeOutputButton)
@@ -365,6 +379,16 @@ public class RecorderFrame extends javax.swing.JFrame {
         mainPanel.setBorder(BorderFactory.createLineBorder(c, 5));
     }//GEN-LAST:event_formWindowGainedFocus
 
+    private void screenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_screenButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+        int retVal = chooser.showSaveDialog(this);
+        if(retVal == JFileChooser.APPROVE_OPTION){
+            chooser.setVisible(false);
+            Recorder.takeScreenshot(chooser.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_screenButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -401,6 +425,7 @@ public class RecorderFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox onCompleteCheck;
     private javax.swing.JLabel outLabel;
     private javax.swing.JButton recButton;
+    private javax.swing.JButton screenButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton stopButton;
     private javax.swing.JPanel titlePanel;

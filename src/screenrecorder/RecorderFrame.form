@@ -54,24 +54,27 @@
               <Component id="titlePanel" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="recButton" min="-2" pref="48" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="stopButton" min="-2" pref="48" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="screenButton" min="-2" pref="48" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="outLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="statusLabel" max="32767" attributes="0"/>
+                      <Component id="statusLabel" min="-2" pref="186" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="fileField" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="onCompleteCheck" pref="194" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
+                          <Component id="onCompleteCheck" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="changeOutputButton" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="fileField" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -94,6 +97,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="stopButton" alignment="1" pref="0" max="32767" attributes="0"/>
                               <Component id="recButton" alignment="1" min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="screenButton" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -262,6 +266,18 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onCompleteCheckActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="screenButton">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/screenrecorder/res/rsz_1rsz_1rsz_camera-icon.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Take a screenshot"/>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="screenButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
