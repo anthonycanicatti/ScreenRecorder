@@ -164,7 +164,7 @@ public class RecorderFrame extends javax.swing.JFrame {
         statusLabel.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         statusLabel.setText("Status: Ready");
 
-        recButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/rsz_record.png"))); // NOI18N
+        recButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/rec_icon.png"))); // NOI18N
         recButton.setToolTipText("Start Recording");
         recButton.setFocusable(false);
         recButton.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +173,7 @@ public class RecorderFrame extends javax.swing.JFrame {
             }
         });
 
-        stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/st.png"))); // NOI18N
+        stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/stop_icon.png"))); // NOI18N
         stopButton.setEnabled(false);
         stopButton.setFocusable(false);
         stopButton.addActionListener(new java.awt.event.ActionListener() {
@@ -210,7 +210,7 @@ public class RecorderFrame extends javax.swing.JFrame {
             }
         });
 
-        screenButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/rsz_1rsz_1rsz_camera-icon.png"))); // NOI18N
+        screenButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/screenrecorder/res/cam_icon.png"))); // NOI18N
         screenButton.setToolTipText("Take a screenshot");
         screenButton.setFocusable(false);
         screenButton.addActionListener(new java.awt.event.ActionListener() {
