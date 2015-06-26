@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -23,6 +24,7 @@ public class RecorderFrame extends javax.swing.JFrame {
     int pX, pY;
     RecorderFrame myself = this;
     String outputDir = null;
+    boolean onCompleteShowFile = true;
     
     /**
      * Creates new form RecorderFrame
@@ -81,8 +83,9 @@ public class RecorderFrame extends javax.swing.JFrame {
         recButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         fileField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        outLabel = new javax.swing.JLabel();
         changeOutputButton = new javax.swing.JButton();
+        onCompleteCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -171,16 +174,28 @@ public class RecorderFrame extends javax.swing.JFrame {
 
         fileField.setEditable(false);
         fileField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        fileField.setEnabled(false);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel2.setText("Output File:");
+        outLabel.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        outLabel.setText("Output File:");
+        outLabel.setEnabled(false);
 
         changeOutputButton.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         changeOutputButton.setText("Change");
+        changeOutputButton.setEnabled(false);
         changeOutputButton.setFocusable(false);
         changeOutputButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeOutputButtonActionPerformed(evt);
+            }
+        });
+
+        onCompleteCheck.setSelected(true);
+        onCompleteCheck.setText("Select file upon completion");
+        onCompleteCheck.setFocusable(false);
+        onCompleteCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onCompleteCheckActionPerformed(evt);
             }
         });
 
@@ -191,17 +206,19 @@ public class RecorderFrame extends javax.swing.JFrame {
             .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(recButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileField, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+                        .addComponent(outLabel))
+                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fileField)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(onCompleteCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(changeOutputButton)))
                 .addContainerGap())
@@ -215,7 +232,7 @@ public class RecorderFrame extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(fileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
+                            .addComponent(outLabel)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -224,7 +241,8 @@ public class RecorderFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeOutputButton)
-                    .addComponent(statusLabel))
+                    .addComponent(statusLabel)
+                    .addComponent(onCompleteCheck))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -295,8 +313,18 @@ public class RecorderFrame extends javax.swing.JFrame {
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
         // TODO add your handling code here:
+        Recorder.stopRecording();
         statusLabel.setText("Creating output file...");
-        int created = Recorder.stopAndCreate("file:"+outputDir);
+        if(onCompleteShowFile){
+            JFileChooser chooser = new JFileChooser();
+            File f = new File(outputDir);
+            chooser.setSelectedFile(f);
+            int retVal = chooser.showSaveDialog(this);
+            if(retVal == JFileChooser.APPROVE_OPTION){
+                outputDir = chooser.getSelectedFile().getAbsolutePath();
+            }
+        }
+        int created = Recorder.createFile("file:"+outputDir);
         if(created > 1)
             statusLabel.setText("Unable to create output file.");
         else
@@ -305,6 +333,14 @@ public class RecorderFrame extends javax.swing.JFrame {
         recButton.setEnabled(true);
         stopButton.setEnabled(false);
     }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void onCompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCompleteCheckActionPerformed
+        // TODO add your handling code here:
+        onCompleteShowFile = onCompleteCheck.isSelected();
+        outLabel.setEnabled(!onCompleteShowFile);
+        changeOutputButton.setEnabled(!onCompleteShowFile);
+        fileField.setEnabled(!onCompleteShowFile);
+    }//GEN-LAST:event_onCompleteCheckActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,9 +373,10 @@ public class RecorderFrame extends javax.swing.JFrame {
     private javax.swing.JLabel closeButton;
     private javax.swing.JTextField fileField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel minButton;
+    private javax.swing.JCheckBox onCompleteCheck;
+    private javax.swing.JLabel outLabel;
     private javax.swing.JButton recButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JButton stopButton;

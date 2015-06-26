@@ -66,14 +66,17 @@ public class Recorder {
                            record = true;
                            count = 1;
                        }
-                       Thread.sleep(10);
                    }
-               } catch (AWTException | InterruptedException | IOException ex) {
+               } catch (AWTException | IOException ex) {
                    Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
         });
         recordingThread.start();
+    }
+    
+    public static void stopRecording(){
+        record = false;
     }
     
     /**
@@ -83,8 +86,7 @@ public class Recorder {
      * @param outFile the path to the output file
      * @return success code - 0 for complete success, 1 if createMediaLocator returned null, 2 for exception
      */
-    public static int stopAndCreate(String outFile){
-        record = false;
+    public static int createFile(String outFile){
         int retVal = 0;
         try {
             JpegImagesToMovie imgsToMovie = new JpegImagesToMovie();
