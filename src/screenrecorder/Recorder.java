@@ -6,6 +6,9 @@
 package screenrecorder;
 
 import java.awt.AWTException;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -19,8 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.MediaLocator;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Recorder {
     
     static String tempDir = null;
     static boolean record = false;
+    static int width, height;
     
     static final int WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     static final int HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -62,6 +64,11 @@ public class Recorder {
                    robot = new Robot();
                    while(count == 0 || record){
                        BufferedImage img = robot.createScreenCapture(new Rectangle(WIDTH, HEIGHT));
+                       Image cursor = ImageIO.read(new File("res\\cursor.png"));
+                       int x = MouseInfo.getPointerInfo().getLocation().x;
+                       int y = MouseInfo.getPointerInfo().getLocation().y;
+                       Graphics2D g2D = img.createGraphics();
+                       g2D.drawImage(cursor, x, y, 17, 23, null);
                        File imgFile = new File(tempDir+"\\"+System.currentTimeMillis()+".jpeg");
                        ImageIO.write(img, "jpeg", imgFile);
                        if(count == 0){
@@ -105,7 +112,7 @@ public class Recorder {
             if((oml = JpegImagesToMovie.createMediaLocator(outFile)) == null){
                 retVal = 1;
             }
-            imgsToMovie.doIt(WIDTH, HEIGHT, 3, imgList, oml);
+            imgsToMovie.doIt(WIDTH, HEIGHT, 10, imgList, oml);
         } catch(MalformedURLException e){
             retVal = 2;
         } finally {
