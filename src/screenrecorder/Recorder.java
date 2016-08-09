@@ -67,7 +67,7 @@ public class Recorder {
                    robot = new Robot();
                    while(count == 0 || record){
                        BufferedImage img = robot.createScreenCapture(new Rectangle(width, height));
-                       Image cursor = ImageIO.read(new File("res\\cursor.png"));
+                       Image cursor = ImageIO.read(getClass().getResource("/screenrecorder/res/cursor.png"));
                        int x = MouseInfo.getPointerInfo().getLocation().x;
                        int y = MouseInfo.getPointerInfo().getLocation().y;
                        Graphics2D g2D = img.createGraphics();
