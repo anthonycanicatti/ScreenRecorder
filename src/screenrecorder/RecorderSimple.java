@@ -26,6 +26,7 @@ public class RecorderSimple extends javax.swing.JFrame {
     public RecorderSimple() {
         initComponents();
         
+        this.setLocationRelativeTo(null);
         JFileChooser fc = new JFileChooser();
         FileSystemView fw = fc.getFileSystemView();
         outputDir = fw.getDefaultDirectory().getAbsolutePath()+"\\ScreenRecord.mov";
