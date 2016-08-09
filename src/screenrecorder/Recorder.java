@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.MediaLocator;
+import javax.swing.JFrame;
 
 /**
  *
@@ -54,6 +55,8 @@ public class Recorder {
      * Use Robot to capture screenshots and save them to files
      */
     public static void startRecording(){
+        Recorder.width = WIDTH;
+        Recorder.height = HEIGHT;
         createTempDir();
         Thread recordingThread = new Thread(new Runnable(){
            @Override
@@ -63,7 +66,41 @@ public class Recorder {
                try {
                    robot = new Robot();
                    while(count == 0 || record){
-                       BufferedImage img = robot.createScreenCapture(new Rectangle(WIDTH, HEIGHT));
+                       BufferedImage img = robot.createScreenCapture(new Rectangle(width, height));
+                       Image cursor = ImageIO.read(new File("res\\cursor.png"));
+                       int x = MouseInfo.getPointerInfo().getLocation().x;
+                       int y = MouseInfo.getPointerInfo().getLocation().y;
+                       Graphics2D g2D = img.createGraphics();
+                       g2D.drawImage(cursor, x, y, 17, 23, null);
+                       File imgFile = new File(tempDir+"\\"+System.currentTimeMillis()+".jpeg");
+                       ImageIO.write(img, "jpeg", imgFile);
+                       if(count == 0){
+                           record = true;
+                           count = 1;
+                       }
+                   }
+               } catch (AWTException | IOException ex) {
+                   Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+        });
+        recordingThread.start();
+    }
+    
+    public static void startRecording(JFrame frame){
+        Recorder.width = frame.getWidth();
+        Recorder.height = frame.getHeight();
+        createTempDir();
+        Thread recordingThread = new Thread(new Runnable(){
+           @Override
+           public void run(){
+               Robot robot;
+               int count = 0;
+               try {
+                   robot = new Robot();
+                   while(count == 0 || record){
+                       Rectangle r = new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+                       BufferedImage img = robot.createScreenCapture(r);
                        Image cursor = ImageIO.read(new File("res\\cursor.png"));
                        int x = MouseInfo.getPointerInfo().getLocation().x;
                        int y = MouseInfo.getPointerInfo().getLocation().y;
@@ -112,7 +149,7 @@ public class Recorder {
             if((oml = JpegImagesToMovie.createMediaLocator(outFile)) == null){
                 retVal = 1;
             }
-            imgsToMovie.doIt(WIDTH, HEIGHT, 10, imgList, oml);
+            imgsToMovie.doIt(width, height, 10, imgList, oml);
         } catch(MalformedURLException e){
             retVal = 2;
         } finally {
